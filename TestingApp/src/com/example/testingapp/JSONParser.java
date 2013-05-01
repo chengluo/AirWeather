@@ -28,6 +28,10 @@ public class JSONParser extends AsyncTask<String, Void, JSONObject>{
  
     }
  
+    /**
+     * Return JSONOject from given URL
+     * Code from http://www.androidhive.info/2012/01/android-json-parsing-tutorial/
+     */
     static JSONObject getJSONFromUrl(String url) {
  
         // Making HTTP request
@@ -80,6 +84,9 @@ public class JSONParser extends AsyncTask<String, Void, JSONObject>{
 		return getJSONFromUrl(params[0]);
 	}
 	
+	/**
+	 * Return results on the UI View
+	 */
 	@Override
 	protected void onPostExecute(JSONObject jsonObject){
     	Log.d("JSON Length:", String.valueOf(jsonObject.length()));
