@@ -15,12 +15,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.location.*;
 import android.content.Intent;
 import android.provider.Settings;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener, LocationListener{
+import org.json.JSONObject;
+import android.util.Log;
+
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener, LocationListener, View.OnClickListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -41,6 +45,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private String locationProvider;
     private TextView latTextView;
     private TextView lonTextView;
+    private Button getWeatherButton;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +99,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
           startActivity(intent);
         }
         
+        //initia the UI
+        getWeatherButton = (Button) findViewById(R.id.button1);
+        getWeatherButton.setOnClickListener(this);
     }
 
     @Override
@@ -158,6 +166,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void onProviderDisabled(String provider) {
     	
     }
+    
+    
+    /**
+     * 	Get the current weather from the given ICAO code
+     */
+	@Override
+	public void onClick(View arg0) {
+    	JSONParser jsonParser = new JSONParser();
+    	jsonParser.execute("http://ws.geonames.org/weatherIcaoJSON?ICAO=KSFO");
+    	
+    }
+   
     
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
