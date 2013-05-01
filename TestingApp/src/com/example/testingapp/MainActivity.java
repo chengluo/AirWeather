@@ -55,7 +55,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
           startActivity(intent);
         }
         
-        //initia the UI
+        //initial the UI
         getWeatherButton = (Button) findViewById(R.id.button1);
         getWeatherButton.setOnClickListener(this);
     }
