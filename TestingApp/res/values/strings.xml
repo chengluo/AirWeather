@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">AirWeather</string>
@@ -12,5 +11,6 @@
     <string name="text_longitude">Longitude</string>
     <string name="icao_hint">Please type ICAO code</string>
     <string name="get_weather">Get Weather</string>
+    <string name="weather_label">Current Weather</string>
 
 </resources>

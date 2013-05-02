@@ -16,9 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.location.*;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.Settings;
 
 import org.json.JSONObject;
@@ -58,6 +61,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         //initial the UI
         getWeatherButton = (Button) findViewById(R.id.button1);
         getWeatherButton.setOnClickListener(this);
+        
+        //get LAST_KNOWN_WEATHER from the SharedPreferences
+        SharedPreferences myPrefs;  
+        myPrefs = getSharedPreferences("com.example.testingapp", Context.MODE_PRIVATE);
+        String lastKnownWeather = myPrefs.getString("com.example.testingapp.LAST_KNOWN_WEATHER", "");
+        TextView weatherTextView = (TextView)findViewById(R.id.textView5);
+        weatherTextView.setText(lastKnownWeather);
     }
 
     @Override
@@ -129,8 +139,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
 	@Override
 	public void onClick(View arg0) {
-    	JSONParser jsonParser = new JSONParser();
-    	jsonParser.execute("http://ws.geonames.org/weatherIcaoJSON?ICAO=KSFO");
+		String icaoCode = ((EditText)findViewById(R.id.editText1)).getText().toString();
+		//check icaoCode is valid or not
+		
+    	JSONParser jsonParser = new JSONParser(this);
+    	jsonParser.execute("http://ws.geonames.org/weatherIcaoJSON?ICAO="+icaoCode);
     	
     }
 }

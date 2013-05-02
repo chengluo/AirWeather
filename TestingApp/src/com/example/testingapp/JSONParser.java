@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
- 
+
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -14,18 +15,23 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
  
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
- 
+import android.widget.*;
+import android.view.View;
+
 public class JSONParser extends AsyncTask<String, Void, JSONObject>{
  
     static InputStream is = null;
     static JSONObject jObj = null;
     static String json = "";
- 
+    private Activity __callerActivity;
     // constructor
-    public JSONParser() {
- 
+    public JSONParser(Activity activity) {
+    	this.__callerActivity = activity;
     }
  
     /**
@@ -91,6 +97,34 @@ public class JSONParser extends AsyncTask<String, Void, JSONObject>{
 	protected void onPostExecute(JSONObject jsonObject){
     	Log.d("JSON Length:", String.valueOf(jsonObject.length()));
     	Log.d("Weather is:", jsonObject.toString());
+    	
+    	//process the JSONobject
+    	TextView currentWeatherTextView = (TextView)this.__callerActivity.findViewById(R.id.textView5);
+    	String weatherCondition = getWeatherConditionFromJSONObject(jsonObject);
+    	currentWeatherTextView.setText(weatherCondition);
+    	
+    	//Set Preference for the next launch
+    	SharedPreferences myPrefs = __callerActivity.getSharedPreferences("com.example.testingapp",  Context.MODE_PRIVATE);
+    	SharedPreferences.Editor prefsEditor;  
+    	prefsEditor = myPrefs.edit();  
+    	prefsEditor.putString("com.example.testingapp.LAST_KNOWN_WEATHER", weatherCondition);
+    	prefsEditor.commit();
+	}
+	
+	/**
+	 * Get weather condition from JSONObject 
+	 */
+	private String getWeatherConditionFromJSONObject(JSONObject jsonObj) {
+		String weatherString = new String();
+		try{
+			JSONObject weatherObservation = jsonObj.getJSONObject("weatherObservation");
+			weatherString = "Clouds:" + weatherObservation.getString("clouds") + ": Weather:" + weatherObservation.getString("weatherCondition");
+		}
+		catch (JSONException e) {
+	         //throw new RuntimeException(e);
+			return "Invalid ICAO code";
+		}
+		return weatherString;
 	}
 	
 }
