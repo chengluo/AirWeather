@@ -51,12 +51,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
           .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         // Check if enabled and if not send user to the GSP settings
-        // Better solution would be to display a dialog and suggesting to 
-        // go to the settings
         if (!enabled) {
           Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
           startActivity(intent);
         }
+        
+        //TODO: get nearby airport from geo-coordinates
         
         //initial the UI
         getWeatherButton = (Button) findViewById(R.id.button1);
@@ -140,7 +140,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	@Override
 	public void onClick(View arg0) {
 		String icaoCode = ((EditText)findViewById(R.id.editText1)).getText().toString();
-		//check icaoCode is valid or not
+		//TODO:check icaoCode is valid before send the request
 		
     	JSONParser jsonParser = new JSONParser(this);
     	jsonParser.execute("http://ws.geonames.org/weatherIcaoJSON?ICAO="+icaoCode);
