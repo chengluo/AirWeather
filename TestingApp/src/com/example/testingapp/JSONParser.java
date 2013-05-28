@@ -52,10 +52,13 @@ public class JSONParser extends AsyncTask<String, Void, JSONObject>{
  
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            return null;
         } catch (ClientProtocolException e) {
             e.printStackTrace();
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
          
         try {
@@ -95,12 +98,19 @@ public class JSONParser extends AsyncTask<String, Void, JSONObject>{
 	 */
 	@Override
 	protected void onPostExecute(JSONObject jsonObject){
-    	Log.d("JSON Length:", String.valueOf(jsonObject.length()));
-    	Log.d("Weather is:", jsonObject.toString());
-    	
-    	//process the JSONobject
     	TextView currentWeatherTextView = (TextView)this.__callerActivity.findViewById(R.id.textView5);
-    	String weatherCondition = getWeatherConditionFromJSONObject(jsonObject);
+    	String weatherCondition;
+		if(jsonObject != null) {
+			Log.d("JSON Length:", String.valueOf(jsonObject.length()));
+			Log.d("Weather is:", jsonObject.toString());
+    	
+			//process the JSONobject
+
+			weatherCondition = getWeatherConditionFromJSONObject(jsonObject);
+		}
+		else {
+			weatherCondition = "Not available";
+		}
     	currentWeatherTextView.setText(weatherCondition);
     	
     	//Set Preference for the next launch
